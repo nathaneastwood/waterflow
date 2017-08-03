@@ -1,0 +1,19 @@
+Package: waterflow
+Type: Package
+Title: Solve the Twitter Waterflow Problem
+Version: 0.1.0
+Authors@R: person("Nathan", "Eastwood", "", "nathan.eastwood@icloud.com", 
+    role = c("aut", "cre"))
+Description: Calculate the total number of squares to be filled in the Twitter
+    waterflow problem and plot it.
+URL: https://github.com/nathaneastwood/waterflow
+BugReports: https://github.com/nathaneastwood/waterflow/issues
+Depends: 
+    R (>= 3.4.1)
+Imports:
+    ggplot2 (>= 2.2.1),
+    R6 (>= 2.2.2)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

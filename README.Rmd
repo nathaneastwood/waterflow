@@ -1,0 +1,79 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "",
+  fig.path = "tools/images/README-"
+)
+```
+
+# waterflow
+
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/waterflow)](http://cran.r-project.org/package=waterflow)
+[![MIT license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
+## Overview
+
+This package is inspired by the [Twitter waterflow problem](http://chrisdone.com/posts/twitter-problem-loeb).
+Consider the following picture:
+
+```{r unfilled, echo = FALSE, fig.cap = "Figure 1: Unfilled valleys"}
+library(ggplot2)
+unfill <- data.frame(pos = 1:9, val = c(2, 5, 1, 2, 3, 4, 7, 7, 6))
+ggplot(unfill) +
+  geom_col(aes(x = pos + 1 / 2, y = val), width = 1, fill = "grey50") +
+        scale_x_continuous(breaks = seq(0, max(unfill$pos), 1)) + 
+        theme(
+          panel.background = element_blank(),
+          panel.ontop = TRUE,
+          panel.grid.minor.x = element_blank(),
+          axis.ticks = element_blank(),
+          text = element_blank()
+        )
+```
+
+Figure 1 shows a series of walls and empty valleys. We can represent this picture by an array of integers, where the value at each index is the height of the wall. So in this case, the array of integers can be defined as:
+
+```{r array}
+x <- c(2, 5, 1, 2, 3, 4, 7, 7, 6)
+```
+
+Now imagine it rains. How much water is going to be accumulated in puddles between walls? No puddles are formed at edges of the wall and water is considered to simply run off the edge. We count volume in square blocks of 1×1. Thus, we are left with a puddle between column 2 and column 6 and the volume is 10.
+
+## Installation
+
+You can install the package directly from GitHub using the [`devtools` package](https://github.com/hadley/devtools).
+
+```{r installation, eval = FALSE}
+# install.packages("devtools")
+install_github("nathaneastwood/waterflow")
+```
+
+## Useage
+
+To use the package, simply generate a new instance of the `waterflow` class by providing it with a vector of data.
+
+```{r data}
+library(waterflow)
+p <- waterflow$new(x)
+```
+
+You can then find the total number of squares filled by the water.
+
+```{r total}
+p$total()
+```
+
+Or plot the data.
+
+```{r filledPlot, fig.cap = "Figure 2: Filled valleys"}
+p$plot()
+```
