@@ -25,7 +25,8 @@
 #' \code{$plot()} plots the walls filled with water.
 #'
 #' @importFrom R6 R6Class
-#' @importFrom ggplot2 ggplot geom_col aes scale_fill_manual theme_void
+#' @importFrom ggplot2 ggplot geom_col aes scale_fill_manual scale_x_continuous
+#'   theme element_blank element_line
 #' @name waterflow
 #' @examples
 #' x <- c(2, 5, 1, 2, 3, 4, 7, 7, 6)
@@ -73,6 +74,9 @@ waterflow <- R6Class(
           panel.background = element_blank(),
           panel.ontop = TRUE,
           panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_line(colour = "white", size = 0.5),
+          panel.grid.major.x = element_line(colour = "white", size = 0.5),
+          panel.grid.major.y = element_line(colour = "white", size = 0.5),
           axis.ticks = element_blank(),
           text = element_blank()
         )
