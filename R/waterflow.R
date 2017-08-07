@@ -46,11 +46,15 @@ waterflow <- R6Class(
       for (i in seq_along(wall)) {
         currentHeight <- wall[i]
         maxLeftHeight <- if (i > 1) {
-          max(wall[1:i])
+          max(wall[1:(i - 1)])
         } else {
           0
         }
-        maxRightHeight <- max(wall[i:len])
+        maxRightHeight <- if (i == len) {
+          0
+        } else {
+          max(wall[(i + 1):len])
+        }
         smallestMaxHeight <- min(maxLeftHeight, maxRightHeight)
         water[i] <- if (smallestMaxHeight - currentHeight > 0) {
           smallestMaxHeight - currentHeight
