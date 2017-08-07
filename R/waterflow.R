@@ -63,6 +63,9 @@ waterflow <- R6Class(
       private$waterDf <- private$tidyWater()
     },
     plot = function() {
+      if (is.null(private$wall)) {
+        stop("No data to plot")
+      }
       ggplot(private$waterDf) +
         geom_col(
           aes(x = pos + 1 / 2, y = val, fill = type),
