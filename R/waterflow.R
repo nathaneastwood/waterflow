@@ -88,6 +88,7 @@ waterflow <- R6Class(
           text = element_blank()
         )
     },
+    print = function() print(private$waterDf),
     total = function() sum(private$water)
   ),
   private = list(
