@@ -8,12 +8,13 @@
 #'   p <- waterflow$new(wall = NULL)
 #'   p$total()
 #'   p$plot()
+#'   p$print()
 #' }
 #'
 #' @section Arguments:
 #' \describe{
 #'   \item{p}{A \code{waterflow} object.}
-#'   \item{wall}{A vector of wall heights}
+#'   \item{wall}{A numeric vector of wall heights}
 #' }
 #'
 #' @section Details:
@@ -24,6 +25,8 @@
 #'
 #' \code{$plot()} plots the walls filled with water.
 #'
+#' \code{$print()} returns the \code{data.frame} of wall and water heights.
+#'
 #' @importFrom R6 R6Class
 #' @importFrom ggplot2 ggplot geom_col aes scale_fill_manual scale_x_continuous
 #'   theme element_blank element_line
@@ -33,6 +36,7 @@
 #' p <- waterflow$new(x)
 #' p$total()
 #' p$plot()
+#' p$print()
 NULL
 
 #' @export
@@ -41,6 +45,12 @@ waterflow <- R6Class(
   "waterflow",
   public = list(
     initialize = function(wall = NULL) {
+      if (is.null(wall)) {
+        stop("Please provide some wall heights")
+      }
+      if (!is.numeric(wall)) {
+        stop("Please provide a numeric vector")
+      }
       len <- length(wall)
       water <- rep(0, len)
       for (i in seq_along(wall)) {
@@ -62,14 +72,9 @@ waterflow <- R6Class(
           0
         }
       }
-      private$water <- water
-      private$wall <- wall
-      private$waterDf <- private$tidyWater()
+      private$waterDf <- private$tidyWater(water, wall)
     },
     plot = function() {
-      if (is.null(private$wall)) {
-        stop("No data to plot")
-      }
       ggplot(private$waterDf) +
         geom_col(
           aes(x = pos + 1 / 2, y = val, fill = type),
@@ -89,20 +94,20 @@ waterflow <- R6Class(
         )
     },
     print = function() print(private$waterDf),
-    total = function() sum(private$water)
+    total = function() {
+      sum(private$waterDf[private$waterDf$type %in% "water", "val"])
+    }
   ),
   private = list(
-    water = NULL,
-    wall = NULL,
-    waterDf = data.frame(),
-    tidyWater = function() {
+    waterDf = NULL,
+    tidyWater = function(water, wall) {
       data.frame(
-        pos = seq_along(private$wall),
+        pos = seq_along(wall),
         type = factor(
-          rep(c("water", "wall"), each = length(private$wall)),
+          rep(c("water", "wall"), each = length(wall)),
           levels = c("water", "wall")
         ),
-        val = c(private$water, private$wall)
+        val = c(water, wall)
       )
     }
   )
