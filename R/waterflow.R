@@ -72,16 +72,16 @@ waterflow <- R6Class(
           0
         }
       }
-      private$waterDf <- private$tidyWater(water, wall)
+      private$heights <- private$tidyWater(water, wall)
     },
     plot = function() {
-      ggplot(private$waterDf) +
+      ggplot(private$heights) +
         geom_col(
           aes(x = pos + 1 / 2, y = val, fill = type),
           width = 1, show.legend = FALSE
         ) +
         scale_fill_manual(values = c("dodgerblue2", "grey50")) +
-        scale_x_continuous(breaks = seq(0, max(private$waterDf$pos), 1)) +
+        scale_x_continuous(breaks = seq(0, max(private$heights$pos), 1)) +
         theme(
           panel.background = element_blank(),
           panel.ontop = TRUE,
@@ -93,13 +93,13 @@ waterflow <- R6Class(
           text = element_blank()
         )
     },
-    print = function() print(private$waterDf),
+    print = function() print(private$heights),
     total = function() {
-      sum(private$waterDf[private$waterDf$type %in% "water", "val"])
+      sum(private$heights[private$heights$type %in% "water", "val"])
     }
   ),
   private = list(
-    waterDf = NULL,
+    heights = NULL,
     tidyWater = function(water, wall) {
       data.frame(
         pos = seq_along(wall),
