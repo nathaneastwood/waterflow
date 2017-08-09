@@ -13,6 +13,7 @@ squares which will fill with water and to plot the walls and filled valleys.
   p <- waterflow$new(wall = NULL)
   p$total()
   p$plot()
+  p$print()
 }
 }
 
@@ -20,7 +21,7 @@ squares which will fill with water and to plot the walls and filled valleys.
 
 \describe{
   \item{p}{A \code{waterflow} object.}
-  \item{wall}{A vector of wall heights}
+  \item{wall}{A numeric vector of wall heights}
 }
 }
 
@@ -32,6 +33,8 @@ squares which will fill with water and to plot the walls and filled valleys.
 with.
 
 \code{$plot()} plots the walls filled with water.
+
+\code{$print()} returns the \code{data.frame} of wall and water heights.
 }
 
 \examples{
@@ -39,4 +42,5 @@ x <- c(2, 5, 1, 2, 3, 4, 7, 7, 6)
 p <- waterflow$new(x)
 p$total()
 p$plot()
+p$print()
 }
